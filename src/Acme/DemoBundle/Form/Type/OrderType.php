@@ -32,7 +32,6 @@ class OrderType extends AbstractType {
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
         $resolver->setDefaults(array(
             'data_class' => 'Acme\\DemoBundle\\Entity\\Order',
-            'csrf_protection' => false,
         ));
     }
 

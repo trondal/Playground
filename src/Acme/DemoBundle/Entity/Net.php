@@ -51,7 +51,4 @@ class Net extends Product {
         return $this->orgId;
     }
     
-    public function getType(){
-        return 'net_type';
-    }
 }

@@ -39,12 +39,12 @@ class DemoController extends Controller
             ),
             'allow_delete' => true
         ));
-        $coll = new ArrayCollection(array(
+        /*$coll = new ArrayCollection(array(
             new Mobile('Trond', 11111111),
             new Net(54, 22222222)
-        ));
+        ));*/
 
-        $form->setData($coll);
+        $form->setData($order->getProducts());
 
         //$form = $this->createForm(new OrderType(), $order);
         //$form->setData(new \Acme\DemoBundle\Entity\Mobile('Alice', 'JOnes'));

@@ -4,6 +4,7 @@ namespace Acme\DemoBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class NetType extends AbstractType {
 
@@ -14,6 +15,13 @@ class NetType extends AbstractType {
         parent::buildForm($builder, $options);
         $builder->add('number', 'text');
         $builder->add('orgId', 'text');
+    }
+    
+    public function setDefaultOptions(OptionsResolverInterface $resolver) {
+        $resolver->setDefaults(array(
+            'data_class' => 'Acme\\DemoBundle\\Entity\\Net',
+            'model_class' => 'Acme\\DemoBundle\\Entity\\Net'
+        ));
     }
     
     public function getName() {
