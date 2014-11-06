@@ -22,6 +22,13 @@ class Order {
     protected $id;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="ribollita", type="integer", nullable = false)
+     */
+    protected $ribollitaId;
+    
+    /**
      * @ORM\OneToMany(targetEntity="Product", mappedBy="order")
      */
     protected $products;
@@ -41,6 +48,14 @@ class Order {
     
     public function getProducts() {
         return $this->products;
+    }
+    
+    public function setRibollitaId($id) {
+        $this->ribollitaId = $id;
+    }
+    
+    public function getRibollitaId(){
+        return $this->ribollitaId;
     }
 
 }

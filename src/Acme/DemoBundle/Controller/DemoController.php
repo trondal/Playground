@@ -28,7 +28,9 @@ class DemoController extends Controller
         // force loading of items;
         //$items = $order->getProducts();
         
-        $factory = Forms::createFormFactoryBuilder()
+        $form = $this->createForm('order_type', $order);
+        
+        /*$factory = Forms::createFormFactoryBuilder()
             ->addExtensions($this->getExtensions())
             ->getFormFactory();
         $form =  $factory->create('infinite_form_polycollection', null, array(
@@ -38,13 +40,13 @@ class DemoController extends Controller
                 'net_type'
             ),
             'allow_delete' => true
-        ));
+        ));*/
         /*$coll = new ArrayCollection(array(
             new Mobile('Trond', 11111111),
             new Net(54, 22222222)
         ));*/
 
-        $form->setData($order->getProducts());
+        //$form->setData($order->getProducts());
 
         //$form = $this->createForm(new OrderType(), $order);
         //$form->setData(new \Acme\DemoBundle\Entity\Mobile('Alice', 'JOnes'));
@@ -54,11 +56,11 @@ class DemoController extends Controller
         );
     }
     
-    protected function getExtensions() {
+    /*protected function getExtensions() {
         return array(
             new FormExtension()
         );
-    }
+    }*/
 
     /**
      * @Route("/hello/{name}", name="_demo_hello")

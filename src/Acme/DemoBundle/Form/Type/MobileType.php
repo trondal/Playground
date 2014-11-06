@@ -12,7 +12,11 @@ class MobileType extends AbstractType {
     
     public function buildForm(FormBuilderInterface $builder, array $options) {
         parent::buildForm($builder, $options);
-        $builder->add('number', 'text');
+        $builder->add('number', 'text')
+            ->add('_type', 'hidden', [
+                'data' => $this->getName(),
+                'mapped' => false
+            ]);
     }
     
     public function setDefaultOptions(OptionsResolverInterface $resolver) {

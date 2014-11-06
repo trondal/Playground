@@ -37,22 +37,34 @@ class SeedCommand extends ContainerAwareCommand {
         $om = $this->getContainer()->get('doctrine.orm.entity_manager');
 
         $order = new Order();
-        //$mobileLine = new MobileLine();
-        $mobile = new Mobile(97955731, 'Trond');
-        //$mobileLine->setMobile($mobile);
+        $order->setRibollitaId(42);
         
-        //$netLine = new NetLine();        
-        $net = new Net(342342, 23423234);
-        //$netLine->setNet($net);
+        $mobile1 = new Mobile('Alice', 11111111);
+        $mobile2 = new Mobile('Bob', 22222222);
+        $mobile3 = new Mobile('Jones', 33333333);
+
+        $net1 = new Net(11, 55555555);
+        $net2 = new Net(22, 66666666);
+        $net3 = new Net(33, 77777777);
         
-        $order->addProduct($mobile);
-        $order->addProduct($net);
+        $order->addProduct($mobile1);
+        $order->addProduct($net1);
+        $order->addProduct($net2);
         
         $om->persist($order);
-        $om->persist($mobile);
-        //$om->persist($mobileLine);
-        $om->persist($net);
-        //$om->persist($netLine);
+        $om->persist($mobile1);
+        $om->persist($net1);
+        $om->persist($net2);
+        $om->flush();
+        
+        $order->addProduct($mobile2);
+        $order->addProduct($mobile3);
+        $order->addProduct($net3);
+        
+        $om->persist($mobile2);
+        $om->persist($mobile3);
+
+        $om->persist($net3);
         
         $om->flush();
         $output->write('<info>Seed done.</info>', true);

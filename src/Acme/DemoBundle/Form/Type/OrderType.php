@@ -14,7 +14,7 @@ class OrderType extends AbstractType {
      */
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
-                ->add('id', 'text')
+                ->add('ribollitaId', 'text')
                 ->add('products', 'infinite_form_polycollection', array(
                     'types' => array(
                         'product_type',
@@ -22,8 +22,13 @@ class OrderType extends AbstractType {
                         'net_type'
                     ),
                     'allow_add' => true,
-                    'allow_delete' => true
-                ));
+                    'allow_delete' => true,
+                    'prototype' => true
+                ))
+                ->add('_type', 'hidden', [
+                'data' => $this->getName(),
+                'mapped' => false
+            ]);
     }
 
     /**

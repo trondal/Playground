@@ -14,7 +14,11 @@ class NetType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         parent::buildForm($builder, $options);
         $builder->add('number', 'text');
-        $builder->add('orgId', 'text');
+        $builder->add('orgId', 'text')
+        ->add('_type', 'hidden', [
+                'data' => $this->getName(),
+                'mapped' => false
+        ]);
     }
     
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
