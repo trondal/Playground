@@ -13,11 +13,11 @@ class NetType extends AbstractType {
     
     public function buildForm(FormBuilderInterface $builder, array $options) {
         parent::buildForm($builder, $options);
-        $builder->add('number', 'text');
-        $builder->add('orgId', 'text')
-        ->add('_type', 'hidden', [
-                'data' => $this->getName(),
-                'mapped' => false
+        $builder->add('number', 'text')
+                ->add('orgId', 'text')
+                ->add('_type', 'hidden', [
+                    'data' => $this->getName(),
+                    'mapped' => false
         ]);
     }
     
@@ -26,6 +26,10 @@ class NetType extends AbstractType {
             'data_class' => 'Acme\\DemoBundle\\Entity\\Net',
             'model_class' => 'Acme\\DemoBundle\\Entity\\Net'
         ));
+    }
+    
+    public function getParent() {
+        return 'product_type';
     }
     
     public function getName() {

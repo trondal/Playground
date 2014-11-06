@@ -23,45 +23,23 @@ class DemoController extends Controller
      * @Route("/", name="_demo")
      * @Template()
      */
-    public function indexAction() {
-        $order = $this->getDoctrine()->getRepository('AcmeDemoBundle:Order')->find(1);
-        // force loading of items;
-        //$items = $order->getProducts();
-        
+    public function indexAction(Request $request) {
+        $em = $this->getDoctrine()->getEntityManager();
+        $order = $em->getRepository('AcmeDemoBundle:Order')->find(1);
         $form = $this->createForm('order_type', $order);
         
-        /*$factory = Forms::createFormFactoryBuilder()
-            ->addExtensions($this->getExtensions())
-            ->getFormFactory();
-        $form =  $factory->create('infinite_form_polycollection', null, array(
-            'types' => array(
-                'product_type',
-                'mobile_type',
-                'net_type'
-            ),
-            'allow_delete' => true
-        ));*/
-        /*$coll = new ArrayCollection(array(
-            new Mobile('Trond', 11111111),
-            new Net(54, 22222222)
-        ));*/
-
-        //$form->setData($order->getProducts());
-
-        //$form = $this->createForm(new OrderType(), $order);
-        //$form->setData(new \Acme\DemoBundle\Entity\Mobile('Alice', 'JOnes'));
-        
+        if ($request->isMethod('POST')){
+            $form->handleRequest($request);
+            if ($form->isValid()){
+                $em->persist($order);
+                $em->flush();
+            }
+        }     
         return $this->render(
             'AcmeDemoBundle:Demo:form.html.twig', array('form' => $form->createView())
         );
     }
     
-    /*protected function getExtensions() {
-        return array(
-            new FormExtension()
-        );
-    }*/
-
     /**
      * @Route("/hello/{name}", name="_demo_hello")
      * @Template()

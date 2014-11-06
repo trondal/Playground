@@ -46,6 +46,10 @@ class Order {
         $this->products->add($product);
     }
     
+    public function setProducts($products){
+        $this->products = $products;
+    }
+    
     public function getProducts() {
         return $this->products;
     }

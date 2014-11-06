@@ -1,5 +1,29 @@
 {% extends "AcmeDemoBundle::layout.html.twig" %}
 
+{% form_theme form.products _self %}
+ 
 {% block content %}
-    {{ form(form) }}
+    <p>{{ form_errors(form)}}</p>
+    <form action="" method="POST">
+        {{ form_rest(form) }}
+        <input type="submit" value="Send"/>
+    </form>
+            
+    <script>
+        $( document ).ready(function() {
+            console.log('init');
+            $('[data-form-widget=collection]').each(function () {
+                console.log('collection');
+                new window.infinite.Collection(this, $('[data-prototype]', this));
+            });
+        });
+    </script>
 {% endblock %}
+
+{% block infinite_form_polycollection_row %}
+    {% set line = attribute(form.vars.prototypes, 'mobile_type') %}
+    <a data-prototype="{{ form_row(line) | escape }}" href="#">Add Mobile Type</a>
+    {% set line = attribute(form.vars.prototypes, 'net_type') %}
+    <a data-prototype="{{ form_row(line) | escape }}" href="#">Add Net Type</a>
+    {{ form_widget(form) }}
+{% endblock infinite_form_polycollection_row %}

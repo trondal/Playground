@@ -17,18 +17,18 @@ class OrderType extends AbstractType {
                 ->add('ribollitaId', 'text')
                 ->add('products', 'infinite_form_polycollection', array(
                     'types' => array(
-                        'product_type',
                         'mobile_type',
                         'net_type'
                     ),
                     'allow_add' => true,
                     'allow_delete' => true,
+                    'by_reference' => false,
                     'prototype' => true
                 ))
                 ->add('_type', 'hidden', [
-                'data' => $this->getName(),
-                'mapped' => false
-            ]);
+                    'data' => $this->getName(),
+                    'mapped' => false
+                ]);
     }
 
     /**
@@ -37,6 +37,7 @@ class OrderType extends AbstractType {
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
         $resolver->setDefaults(array(
             'data_class' => 'Acme\\DemoBundle\\Entity\\Order',
+            'csrf_protection'   => false,
         ));
     }
 
