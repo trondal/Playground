@@ -3,7 +3,7 @@
 namespace Acme\DemoBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  *
  * This class represents a OrderItem item, of a Order type.
@@ -25,6 +25,12 @@ class Order {
      * @var integer
      *
      * @ORM\Column(name="ribollita", type="integer", nullable = false)
+     * @Assert\Range(
+     *      min = 1,
+     *      max = 10,
+     *      minMessage = "You must be at least {{ limit }}cm tall to enter",
+     *      maxMessage = "You cannot be taller than {{ limit }}cm to enter"
+     * )
      */
     protected $ribollitaId;
     

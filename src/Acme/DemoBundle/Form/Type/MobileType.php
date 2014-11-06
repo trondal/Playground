@@ -5,15 +5,17 @@ namespace Acme\DemoBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Validator\Constraints\Length;
 
 class MobileType extends AbstractType {
-
-    protected $dataClass = 'Acme\\DemoBundle\\Entity\\Mobile';
-    
+   
     public function buildForm(FormBuilderInterface $builder, array $options) {
+
         parent::buildForm($builder, $options);
         $builder->add('id', 'text')
-                ->add('name', 'text')
+                ->add('name', 'text', array(
+                    'constraints' => new Length(3),
+                ))
                 ->add('number', 'text')
                 ->add('_type', 'hidden', [
                 'data' => $this->getName(),

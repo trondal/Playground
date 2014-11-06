@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="mobile")
  */
 class Mobile extends Product {
- 
+
     /**
      * @var integer
      *

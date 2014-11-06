@@ -4,16 +4,10 @@ namespace Acme\DemoBundle\Controller;
 
 // these import the "@Route" and "@Template" annotations
 
-
-use Acme\DemoBundle\Entity\Mobile;
-use Acme\DemoBundle\Entity\Net;
 use Acme\DemoBundle\Form\ContactType;
-use Acme\DemoBundle\Tests\PolyCollection\FormExtension;
-use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Forms;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -24,7 +18,7 @@ class DemoController extends Controller
      * @Template()
      */
     public function indexAction(Request $request) {
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $order = $em->getRepository('AcmeDemoBundle:Order')->find(1);
         $form = $this->createForm('order_type', $order);
         

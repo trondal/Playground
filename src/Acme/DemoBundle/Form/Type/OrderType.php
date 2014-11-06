@@ -22,8 +22,9 @@ class OrderType extends AbstractType {
                     ),
                     'allow_add' => true,
                     'allow_delete' => true,
-                    'by_reference' => false,
-                    'prototype' => true
+                    'by_reference' => true,
+                    'prototype' => true,
+                    'cascade_validation' => true
                 ))
                 ->add('_type', 'hidden', [
                     'data' => $this->getName(),

@@ -7,10 +7,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class NetType extends AbstractType {
-
-    protected $dataClass =  'Acme\\DemoBundle\\Entity\\Net';
-    //protected $modelClass = '';
-    
+   
     public function buildForm(FormBuilderInterface $builder, array $options) {
         parent::buildForm($builder, $options);
         $builder->add('number', 'text')
