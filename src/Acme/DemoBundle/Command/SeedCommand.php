@@ -17,7 +17,7 @@ class SeedCommand extends ContainerAwareCommand {
 
     protected function configure(){
         $this
-            ->setName('telio:restart')
+            ->setName('acme:restart')
             ->setDescription('Drops, creates and initializes database with seed data');
     }
 
@@ -39,13 +39,29 @@ class SeedCommand extends ContainerAwareCommand {
         $order = new Order();
         $order->setRibollitaId(42);
         
-        $mobile1 = new Mobile('Alice', 11111111);
-        $mobile2 = new Mobile('Bob', 22222222);
-        $mobile3 = new Mobile('Jones', 33333333);
-
-        $net1 = new Net(11, 55555555);
-        $net2 = new Net(22, 66666666);
-        $net3 = new Net(33, 77777777);
+        $mobile1 = new Mobile();
+        $mobile1->setName('Alice');
+        $mobile1->setNumber(11111111);
+        
+        $mobile2 = new Mobile();
+        $mobile2->setName('Bob');
+        $mobile2->setNumber(22222222);
+        
+        $mobile3 = new Mobile();
+        $mobile3->setName('Jones');
+        $mobile3->setNumber(33333333);
+        
+        $net1 = new Net();
+        $net1->setNumber(44444444);
+        $net1->setOrgId(11);
+              
+        $net2 = new Net();
+        $net2->setOrgId(22);
+        $net2->setNumber(666666666);
+        
+        $net3 = new Net();
+        $net3->setOrgId(33);
+        $net3->setNumber(77777777);
         
         $order->addProduct($mobile1);
         $order->addProduct($net1);

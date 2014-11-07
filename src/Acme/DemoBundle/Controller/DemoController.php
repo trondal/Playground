@@ -19,7 +19,8 @@ class DemoController extends Controller
      */
     public function indexAction(Request $request) {
         $em = $this->getDoctrine()->getManager();
-        $order = $em->getRepository('AcmeDemoBundle:Order')->find(1);
+        //$order = $em->getRepository('AcmeDemoBundle:Order')->find(1);
+        $order = new \Acme\DemoBundle\Entity\Order();
         $form = $this->createForm('order_type', $order);
         
         if ($request->isMethod('POST')){
