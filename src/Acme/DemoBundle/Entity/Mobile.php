@@ -19,7 +19,7 @@ class Mobile extends Product {
      * @Assert\NotBlank
      * @Assert\Length(min = 2, max = 100)
      */
-    protected $name;
+    private $name;
     
     
     /**
@@ -29,12 +29,10 @@ class Mobile extends Product {
      * @Assert\Type(type="integer")
      * @Assert\Range(min=40000000,max=99999999)
      */
-    protected $number;
+    private $number;
     
-    public function __construct($name, $number) {
+    public function __construct() {
         parent::__construct();
-        $this->name = $name;
-        $this->number = $number;
     }
     
     public function getDescription() {

@@ -19,7 +19,7 @@ class Order {
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
 
     /**
      * @var integer
@@ -32,12 +32,12 @@ class Order {
      *      maxMessage = "You cannot be taller than {{ limit }}cm to enter"
      * )
      */
-    protected $ribollitaId;
+    private $ribollitaId;
     
     /**
-     * @ORM\OneToMany(targetEntity="Product", mappedBy="order")
+     * @ORM\OneToMany(targetEntity="Product", mappedBy="order", cascade={"persist"})
      */
-    protected $products;
+    private $products;
     
     public function __construct(){
         $this->products = new \Doctrine\Common\Collections\ArrayCollection();
@@ -48,18 +48,20 @@ class Order {
     }
     
     public function addProduct(Product $product){
-        $product->setOrder($this);
-        $this->products->add($product);
+        if (!$this->products->contains($product)){
+            $product->setOrder($this);
+            $this->products->add($product);
+        }
     }
     
-    public function setProducts($products){
-        $this->products = $products;
+    public function removeProduct(Product $product){
+        $this->products->removeElement($product);
     }
     
     public function getProducts() {
         return $this->products;
     }
-    
+       
     public function setRibollitaId($id) {
         $this->ribollitaId = $id;
     }

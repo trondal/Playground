@@ -4,16 +4,27 @@
  
 {% block content %}
     <p>{{ form_errors(form)}}</p>
-    <form action="" method="POST">
+    <form action="" method="POST" data-form-widget="collection">
         {{ form_rest(form) }}
         <input type="submit" value="Send"/>
     </form>
             
     <script>
+    /**
+     * Creates a new collection object.
+     *
+     * @param collection The DOM element passed here is expected to be a reference to the
+     *                   containing element that wraps all items.
+     * @param prototypes We expect a jQuery array passed here that will provide one or
+     *                   more clickable elements that contain a prototype to be inserted
+     *                   into the collection as a data-prototype attribute.
+     * @param options    Allows configuration of different aspects of the Collection
+     *                   objects behavior.
+     */
+        
+        
         $( document ).ready(function() {
-            console.log('init');
             $('[data-form-widget=collection]').each(function () {
-                console.log('collection');
                 new window.infinite.Collection(this, $('[data-prototype]', this));
             });
         });
@@ -22,8 +33,10 @@
 
 {% block infinite_form_polycollection_row %}
     {% set line = attribute(form.vars.prototypes, 'mobile_type') %}
-    <a data-prototype="{{ form_row(line) | escape }}" href="#">Add Mobile Type</a>
+    <input type="button" data-prototype="{{ form_row(line) | escape }}" value="Add Mobile Type"/>
     {% set line = attribute(form.vars.prototypes, 'net_type') %}
-    <a data-prototype="{{ form_row(line) | escape }}" href="#">Add Net Type</a>
+    <input type="button" data-prototype="{{ form_row(line) | escape }}" value="Add Net Type"/>
+    <br/>
+    <br/>
     {{ form_widget(form) }}
 {% endblock infinite_form_polycollection_row %}

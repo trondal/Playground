@@ -12,7 +12,7 @@ class MobileType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
 
         parent::buildForm($builder, $options);
-        $builder->add('id', 'text')
+        $builder->add('id', 'hidden')
                 ->add('name', 'text', array(
                     'constraints' => new Length(3),
                 ))

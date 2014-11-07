@@ -23,12 +23,12 @@ class Product {
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    protected $id;
+    private $id;
     
     /**
      * @ORM\ManyToOne(targetEntity="Order", inversedBy="products")
      */
-    protected $order;
+    private $order;
   
     public function __construct() {
         
