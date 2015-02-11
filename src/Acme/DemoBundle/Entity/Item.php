@@ -8,9 +8,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  *
  * @ORM\Entity
- * @ORM\Table(name="product")
+ * @ORM\Table(name="item")
  */
-class Product {
+class Item {
 
     /**
      * @var integer
@@ -21,19 +21,24 @@ class Product {
     private $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Order", inversedBy="items")
+     */
+    private $order;
+
+    /**
      * @ORM\Column(name="name", type="string", length=100, nullable=false)
      * @Assert\Length(min=2, max=100)
      */
     private $name;
 
     /**
-     * @ORM\Column(name="type", type="string", length=100, nullable=false)
-     * @Assert\Length(min=2, max=100)
+     * @ORM\ManyToMany(targetEntity="Group", inversedBy="items", cascade={"persist"})
+     * @ORM\JoinTable(name="items_groups")
      */
-    private $type;
+    private $groups;
 
     public function __construct() {
-       
+        $this->groups = new ArrayCollection();
     }
 
     public function setId($id) {
@@ -45,7 +50,7 @@ class Product {
     }
 
     public function setName($name) {
-        echo "Product:setName\n";
+        echo "Item:setName\n";
         $this->name = $name;
     }
 
@@ -53,16 +58,24 @@ class Product {
         return $this->name;
     }
 
-    public function setType($type) {
-        $this->type = $type;
+    public function getOrder() {
+        return $this->order;
     }
 
-    public function getType(){
-        return $this->type;
+    public function setOrder(Order $order) {
+        $this->order = $order;
     }
 
-    public function __toString() {
-        return (string) $this->id;
+    public function getGroups(){
+        return $this->groups;
+    }
+
+    public function addGroup(Group $group){
+        $this->groups->add($group);
+    }
+
+    public function removeGroup(Group $group) {
+        $this->groups->removeElement($group);
     }
 
 }

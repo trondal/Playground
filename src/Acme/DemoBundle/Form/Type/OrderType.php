@@ -2,51 +2,49 @@
 
 namespace Acme\DemoBundle\Form\Type;
 
+use Acme\DemoBundle\Entity\Order;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class OrderType extends AbstractType {
 
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array $options
-     */
-    public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder
-                ->add('ribollitaId', 'text')
-                ->add('products', 'infinite_form_polycollection', array(
-                    'types' => array(
-                        'mobile_type',
-                        'net_type'
-                    ),
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'by_reference' => false,
-                    'prototype' => true,
-                    'cascade_validation' => true
-                ))
-                ->add('_type', 'hidden', [
-                    'data' => $this->getName(),
-                    'mapped' => false
-                ]);
+    private $order = null;
+
+    public function __construct(Order $order) {
+        $this->order = $order;
     }
 
-    /**
-     * @param OptionsResolverInterface $resolver
-     */
+    public function buildForm(FormBuilderInterface $builder, array $options) {
+        $builder
+                ->add('name', 'text')
+                ->add('customer', new CustomerType(), array('label' => 'Customer'))
+                ->add('product', 'entity', array(
+                    'class' => 'AcmeDemoBundle:Product',
+                    'data' => array(
+                        'name' => $this->order->getProduct()->getName(),
+                        'type' => $this->order->getProduct()->getType())
+                ))
+                ->add('items', 'collection', array(
+                    'type' => new ItemType(),
+                    'allow_add' => true,
+                    'by_reference' => false,
+                    'prototype' => true,
+                    'label' => ' '
+                    )
+                );
+    }
+
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'Acme\\DemoBundle\\Entity\\Order',
+            'data_class' => 'Acme\\DemoBundle\Entity\Order',
             'csrf_protection'   => false,
+            'label' => ' '
         ));
     }
 
-    /**
-     * @return string
-     */
     public function getName() {
-        return 'order_type';
+        return 'order';
     }
 
 }

@@ -1,0 +1,134 @@
+<script>
+
+    (function () {
+
+        'use strict';
+
+        angular.module('demoApp', [
+            'ngResource',
+            'demoApp.controllers',
+            'demoApp.factories']
+            ).config(['$httpProvider', function ($httpProvider) {
+
+                // $http service postes JSON as a form
+                $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+
+                // function to convert an object to URIComponent (i.e 'true' form data);
+                var objectToURIComponent = function (obj) {
+                    var query = '', name, value, fullSubName, subName, subValue, innerObj, i;
+                    for (name in obj) {
+                        value = obj[name];
+                        if (value instanceof Array) {
+                            for (i = 0; i < value.length; ++i) {
+                                subValue = value[i];
+                                fullSubName = name + '[' + i + ']';
+                                innerObj = {};
+                                innerObj[fullSubName] = subValue;
+                                query += objectToURIComponent(innerObj) + '&';
+                            }
+                        } else if (value instanceof Object) {
+                            for (subName in value) {
+                                subValue = value[subName];
+                                fullSubName = name + '[' + subName + ']';
+                                innerObj = {};
+                                innerObj[fullSubName] = subValue;
+                                query += objectToURIComponent(innerObj) + '&';
+                            }
+                        } else if (value !== undefined && value !== null) {
+                            query += encodeURIComponent(name) + '=' + encodeURIComponent(value) + '&';
+                        } /*else if (value === null) {
+                         value = '';
+                         query += encodeURIComponent(name) + '=' + encodeURIComponent(value) + '&';
+                         }*/
+                    }
+                    return query.length ? query.substr(0, query.length - 1) : query;
+                };
+
+                // Override $http service's default transformRequest
+                $httpProvider.defaults.transformRequest = [function (data) {
+
+                        if (angular.isObject(data) && String(data) !== '[object File]') {
+                            // clean object for angular properties $promise $resolve
+                            var clean = JSON.parse(angular.toJson(data));
+                            return objectToURIComponent(clean);
+                        } else {
+                            return data;
+                        }
+                        //return angular.isObject(data) && String(data) !== '[object File]' ? objectToURIComponent(data) : data;
+                    }];
+            }
+        ]);
+
+        angular.module('demoApp.controllers', []);
+        angular.module('demoApp.factories', []);
+
+        angular.module('demoApp.factories').factory('Order', Order);
+
+        Order.$inject = ['$resource'];
+        function Order($resource) {
+            return $resource('/json/:id', {id: '@id'}, {
+                save: {
+                    method: 'POST',
+                    url: '/json/:id'
+                }
+            });
+        }
+
+        angular.module('demoApp.factories').factory('Pretty', Pretty);
+        function Pretty() {
+            return {
+                replacer: function (match, pIndent, pKey, pVal, pEnd) {
+                    var key = '<span class=json-key>';
+                    var val = '<span class=json-value>';
+                    var str = '<span class=json-string>';
+                    var r = pIndent || '';
+                    if (pKey)
+                        r = r + key + pKey.replace(/[": ]/g, '') + '</span>: ';
+                    if (pVal)
+                        r = r + (pVal[0] == '"' ? str : val) + pVal + '</span>';
+                    return r + (pEnd || '');
+                },
+                prettyPrint: function (obj) {
+                    var jsonLine = /^( *)("[\w]+": )?("[^"]*"|[\w.+-]*)?([,[{])?$/mg;
+                    return JSON.stringify(obj, null, 3)
+                        .replace(/&/g, '&amp;').replace(/\\"/g, '&quot;')
+                        .replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                        .replace(jsonLine, this.replacer);
+                }
+            };
+        }
+        ;
+
+
+
+        angular.module('demoApp.controllers').controller('DemoController', DemoController);
+        DemoController.$inject = ['$scope', 'Order', 'Pretty'];
+
+        function DemoController($scope, Order, Pretty) {
+            $scope.order = Order.get({id: 1});
+
+            $scope.order.$promise.then(function (data) {
+                $scope.order = data;
+                angular.element('#data-order').html(Pretty.prettyPrint($scope.order));
+            });
+            
+            $scope.$watch(function() { return $scope.order }, function() {
+                angular.element('#data-order').html(Pretty.prettyPrint($scope.order));
+            }, true);
+
+            $scope.test = function() {
+                $scope.order.order.name = 'Tilbud i dag';
+            };
+        }
+
+    })();
+
+</script>
+
+<div ng-controller="DemoController">
+    <input type="button" ng-click="test()"/>
+    <pre>
+        <code id="data-order"></code>
+    </pre>
+    <pre>{{ '{{order}}' }}</pre>
+</div>

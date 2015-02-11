@@ -6,21 +6,27 @@ use Symfony\Component\Form\AbstractType as BaseType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ProductType extends BaseType {
+class ItemType extends BaseType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('name', 'text');
+        $builder->add('name', 'text')
+                ->add('groups', 'collection', array(
+                    'type' => new GroupType(),
+                    'allow_add' => true,
+                    'by_reference' => false,
+                    'label' => ' '
+                ));
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'Acme\\DemoBundle\\Entity\\Product',
+            'data_class' => 'Acme\\DemoBundle\\Entity\\Item',
             'label' => ' '
         ));
     }
 
     public function getName() {
-        return 'product';
+        return 'item';
     }
 
 }

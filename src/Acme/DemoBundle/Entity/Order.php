@@ -2,8 +2,10 @@
 
 namespace Acme\DemoBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  *
  * This class represents a OrderItem item, of a Order type.
@@ -22,52 +24,72 @@ class Order {
     private $id;
 
     /**
-     * @var integer
-     *
-     * @ORM\Column(name="ribollita", type="integer", nullable = false)
-     * @Assert\Range(
-     *      min = 1,
-     *      max = 10,
-     *      minMessage = "You must be at least {{ limit }}cm tall to enter",
-     *      maxMessage = "You cannot be taller than {{ limit }}cm to enter"
-     * )
+     * @ORM\Column(name="name", type="string", length=100, nullable=false)
+     * @Assert\Length(min=2, max=100)
      */
-    private $ribollitaId;
-    
+    private $name;
+
     /**
-     * @ORM\OneToMany(targetEntity="Product", mappedBy="order", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Product")
+     **/
+    private $product;
+
+    /**
+     * @ORM\OneToOne(targetEntity="Customer", cascade={"persist"})
      */
-    private $products;
-    
-    public function __construct(){
-        $this->products = new \Doctrine\Common\Collections\ArrayCollection();
+    private $customer;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Item", mappedBy="order", cascade={"persist"})
+     */
+    private $items;
+
+    public function __construct() {
+        //$this->products = new ArrayCollection();
     }
-    
+
     public function getId() {
         return $this->id;
     }
-    
-    public function addProduct(Product $product){
-        if (!$this->products->contains($product)){
-            $product->setOrder($this);
-            $this->products->add($product);
-        }
+
+    public function setName($name) {
+        echo "Order:setName\n";
+        $this->name = $name;
     }
-    
-    public function removeProduct(Product $product){
-        $this->products->removeElement($product);
+
+    public function getName() {
+        return $this->name;
     }
-    
-    public function getProducts() {
-        return $this->products;
+
+    public function getCustomer() {
+        return $this->customer;
     }
-       
-    public function setRibollitaId($id) {
-        $this->ribollitaId = $id;
+
+    public function setCustomer(Customer $customer) {
+        $this->customer = $customer;
     }
-    
-    public function getRibollitaId(){
-        return $this->ribollitaId;
+
+    public function addItem(Item $item) {
+        //if (!$this->items->contains($item)) {
+            $item->setOrder($this);
+            $this->items->add($item);
+        //}
+    }
+
+    public function removeItem(Item $item) {
+        $this->items->removeElement($item);
+    }
+
+    public function getItems() {
+        return $this->items;
+    }
+
+    public function setProduct(Product $product) {
+        $this->product = $product;
+    }
+
+    public function getProduct() {
+        return $this->product;
     }
 
 }

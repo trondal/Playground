@@ -1,0 +1,60 @@
+{% extends 'AcmeDemoBundle::layout.html.twig' %}
+
+{# import "_self" as the form theme #}
+{% form_theme form _self %}
+
+{% block content %}
+    {{form_start(form)}}
+    {{form_row(form)}}
+    <input type="submit" value="Save"/>
+    {{form_end(form)}}
+    <script>
+    </script>
+{% endblock %}
+
+{% block content2 %}
+    {{ include('AcmeDemoBundle:Index:edit2.html.twig') }}
+    <div ui-view></div>
+{% endblock %}
+
+{% block _order_row %}
+    <fieldset style="background-color: #E6E6E6">
+        <legend>Order</legend>
+        {{form_widget(form)}}
+    </fieldset>
+{% endblock %}
+
+{% block _order_customer_row %}
+    <fieldset style="background-color: #D2E0E6">
+        <legend>Customer</legend>
+        {{ form_widget(form) }}
+    </fieldset>
+{% endblock %}
+
+{% block _order_items_row %}
+    <fieldset class="collection" style="background-color: #d5d5d5">
+        <legend>Items</legend>
+        <input type="button" class="add_item" data-prototype="{{ form_row(prototype) | escape }}"  value="Add Item" />
+        {{ form_widget(form) }}
+    </fieldset>
+    <script type="text/javascript">
+        $(function() {
+            var items = $('#order_items');
+            new window.infinite.Collection(items, items.siblings('.add_item'));
+        });
+    </script>
+{% endblock %}
+
+{% block _order_items_entry_groups_row %}
+    <fieldset class="collection" style="background-color: #dff0d8">
+        <legend>Groups</legend>
+        <input type="button" class="add_item" data-prototype="{{ form_row(prototype) | escape }}"  value="Add Group" />
+        {{ form_widget(form) }}
+    </fieldset>
+    <script type="text/javascript">
+        $(function() {
+            var items = $('#{{ id }}');
+            new window.infinite.Collection(items, items.siblings('.add_item'));
+        });
+    </script>
+{% endblock %}

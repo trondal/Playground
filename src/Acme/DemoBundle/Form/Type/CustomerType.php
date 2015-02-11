@@ -2,25 +2,32 @@
 
 namespace Acme\DemoBundle\Form\Type;
 
-use Symfony\Component\Form\AbstractType as BaseType;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class ProductType extends BaseType {
+class CustomerType extends AbstractType {
 
     public function buildForm(FormBuilderInterface $builder, array $options) {
-        $builder->add('name', 'text');
+        $builder
+            ->add('name', 'text');
     }
 
+    /**
+     * @param OptionsResolverInterface $resolver
+     */
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'Acme\\DemoBundle\\Entity\\Product',
-            'label' => ' '
+            'data_class' => 'Acme\DemoBundle\Entity\Customer',
+            'csrf_protection' => false,
         ));
     }
 
+    /**
+     * @return string
+     */
     public function getName() {
-        return 'product';
+        return 'customer';
     }
 
 }
